@@ -1,157 +1,259 @@
 from turtle import *
-from time import sleep
 import random
 import time
-from math import *
-
-import time as t
+from math import cos, radians, sin
 
 
-click = False
-
-def on_click(i, j):
-    global click
-
-    click = True
-
-onscreenclick(on_click)
-
-def waitforclick():
-    global click
-
-    update()
-    click = False
-
-    while not click:
-        update()
-        t.sleep(.1)
-
-    click = False
+is_clicked = False
+welcome_message = "Welcome to the Lucky Wheel game"
+start_message = "Click on the screen to begin"
 
 
-update()
-
-def Fly(x,y):
-    pu()
-    goto(x,y)
-    pd()
-    return()
-
-def Tal(x,y,tur):
-    Fly(x,y)
-    write(tur, font=style1, align='center')
-    return()
-    
-style1 = ("Arial", 14, "bold")
-style2 = ('Courier', 20, 'bold')
-style3 = ('Courier', 60, 'bold')
-Num =[0,107,"1",87,72,"2",120,-9,"3",86,-96,"4",0,-130,"5",-86,-96,"6",-118,-9,"7",-85,72,"8"]
-
-Screen().bgcolor("lightblue")
-
+number_style = ("Arial", 14, "bold")
+message_style = ("Comic Sans MS", 20, "bold")
+result_style = ("Comic Sans MS", 60, "bold")
+Screen().bgcolor("steelblue")
 speed(0)
 ht()
 colormode(255)
 
 
-def Ring():
-    k=100
+plum_coler_list = [
+    "thistle",
+    "plum",
+    "lightpink",
+    "mistyrose",
+    "palevioletred",
+    "rosybrown"
+]
+
+blue_color_list = [
+    "cadetblue",
+    "cornflowerblue",
+    "slateblue",
+    "lightsteelblue",
+    "powderblue",
+    "navy"
+]
+
+red_color_list = [
+    "firebrick",
+    "indianred",
+    "brown",
+    "maroon",
+    "darkred",
+    "rosybrown",
+    "sienna",
+    "salmon",
+    "darksalmon",
+    "tomato"
+]
+yellow_color_list = [
+    "goldenrod",
+    "darkkhaki",
+    "wheat",
+    "burlywood",
+    "palegoldenrod"
+]
+
+vintage_colors_list = [
+    "goldenrod", "darkkhaki", "wheat", "burlywood",
+    "darkolivegreen", "olivedrab", "darkseagreen", 
+    "cadetblue", "slateblue", "lightsteelblue",
+    "firebrick", "indianred", "sienna", "maroon",
+    "palevioletred", "thistle", "mistyrose"
+]
+
+
+
+yellow_color = random.choice(yellow_color_list)
+blue_color = random.choice(blue_color_list)
+red_color = random.choice(red_color_list)
+plum_coler = random.choice(plum_coler_list)
+black_color = "darkslategray"
+tracer(5,5)
+def on_click(x_pos, y_pos):
+    global is_clicked
+    is_clicked = True
+
+
+onscreenclick(on_click)
+
+
+def wait_for_click():
+    global is_clicked
+
+    update()
+    is_clicked = False
+
+    # Keep updating the screen until the user clicks.
+    while not is_clicked:
+        update()
+        time.sleep(0.1)
+
+    is_clicked = False
+
+
+update()
+
+
+def move_to(pos):
+    pu()
+    goto(pos)
+    pd()
+
+
+def write_number(x_pos, y_pos, value):
+    move_to(x_pos, y_pos)
+    write(value, font=number_style, align="center")
+
+
+
+
+# X position, Y position, and label for each number around the wheel.
+number_positions = [
+    0,
+    107,
+    "1",
+    87,
+    72,
+    "2",
+    120,
+    -9,
+    "3",
+    86,
+    -96,
+    "4",
+    0,
+    -130,
+    "5",
+    -86,
+    -96,
+    "6",
+    -118,
+    -9,
+    "7",
+    -85,
+    72,
+    "8",
+]
+
+
+
+
+def draw_ring_effect():
+    ring_radius = 100
     pensize(10)
     setheading(0)
-    for i in range(5):
-        #sleep(0.1)
-        k = k + 20
-        b1 = random.randrange(1, 255)
-        b2 = random.randrange(1, 255)
-        b3 = random.randrange(1, 255)        
-        Cerkel(0,-k,b1,b2,b3,k)
-        if k == 200:
-            k=80
+
+    for _ in range(5):
+        ring_radius += 20
+        draw_circle(Vec2D(0, -ring_radius), random.choice(vintage_colors_list), ring_radius)
+
+        if ring_radius == 200:
+            ring_radius = 80
+
     pensize(2)
-    return()
-def Dela(v,R):
-    pencolor("plum")
-    y = sin(radians(v))
-    x = cos(radians(v))
-    Fly(120*x,120*y)
-    setheading(R)
-    circle(120,45)
 
-def Cerkel(x,y,a1,a2,a3,r):
+
+def draw_section(start_angle, section_heading):
+    pencolor(plum_coler)
+    y_pos = sin(radians(start_angle))
+    x_pos = cos(radians(start_angle))
+    move_to(Vec2D(120 * x_pos, 120 * y_pos))
+    setheading(section_heading)
+    circle(120, 45)
+
+
+
+def draw_circle(pos, color_choice, radius):
     pu()
-    color(a1,a2,a3)
-    goto (x,y)
+    color(color_choice)
+    goto(pos)
     pd()
-    circle(r)
+    circle(radius)
     pu()
-    return()
 
-def func():
+
+def clear_screen():
     clear()
-    return()
-  
-    
-speed(0)
-Fly(-30, 0)
 
-                    
-Welcom1 = "Du är välkommen till Lyckohjul spelet"
-Welcom2="Klick på skärmen för att börja"
-#write(Welcom, move=False, align="left", font=("Arial", 14, "normal"))
-write(Welcom1, font=style2, align='center')
-Fly(-30,-40)
-write(Welcom2, font=style2, align='center')
+
+speed(0)
+move_to(Vec2D(-30, 0))
+
+write(welcome_message, font=message_style, align="center")
+
+move_to(Vec2D(-30, -40))
+write(start_message, font=message_style, align="center")
 hideturtle()
-waitforclick()
-clear()
-Fly(0,0)
-RK =0
-#Tur = random.randrange(360, 720 ,1)
-TU = random.randrange(1, 9 ,1)
-Tur = TU*45 + 360
-for x in range (6,Tur,6):
+wait_for_click()
+clear_screen()
+move_to(Vec2D(0, 0))
+
+pointer_heading = 0
+selected_slot = random.randrange(1, 9, 1)
+total_spin_angle = selected_slot * 45 + 360
+
+# Spin the pointer with a simple color animation.
+for current_angle in range(6, total_spin_angle, 6):
     pd()
-    for c in ['red', 'plum', 'blue', 'yellow']:
-        color(c)
-        RK= RK +90
-        setheading(RK)
+    for pointer_color in [red_color, plum_coler, blue_color,  yellow_color]:
+        color(pointer_color)
+        pointer_heading += 90
+        setheading(pointer_heading)
         forward(75)
-    RK = RK +6
+
+    pointer_heading += 6
     setheading(0)
-    if x > 360 :
-        Ring()
-        goto(0,0)
+
+    # Add colorful ring effects after the first full rotation.
+    if current_angle > 360:
+        draw_ring_effect()
+        goto(0, 0)
         setheading(0)
 
 pensize(5)
-for c in ['red', 'black', 'black', 'yellow']:
+for pointer_color in [red_color, black_color, black_color, yellow_color]:
     pd()
-    color(c)
-    RK= RK +90
-    setheading(RK)
+    color(pointer_color)
+    pointer_heading += 90
+    setheading(pointer_heading)
     forward(75)
+
 setheading(0)
-Fly(0,0)
+move_to(Vec2D(0, 0))
 pensize(15)
 lt(0)
 
-Fly(0,-120)
-pencolor("red")
+# Draw the outer wheel circles.
+move_to(Vec2D(0, -120))
+pencolor(red_color)
 circle(120)
-Fly(0,-140)
-pencolor("yellow")
+move_to(Vec2D(0, -140))
+pencolor(yellow_color)
 circle(140)
 ht()
-Dela(67,157)
-Dela(157,247)
-Dela(247,337)
-Dela(337,67)
-color(0,0,0)
-for i in range (0,24,3):
-    Tal(Num[i],Num[i+1],Num[i+2])
 
-Fly(0,-30)
-if TU < 8:
-    TU = 8 - TU
-write(TU, font=style3, align='center')
+# Draw the four section dividers on the wheel.
+draw_section(67, 157)
+draw_section(157, 247)
+draw_section(247, 337)
+draw_section(337, 67)
+
+color(0, 0, 0)
+for index in range(0, 24, 3):
+    write_number(
+        number_positions[index],
+        number_positions[index + 1],
+        number_positions[index + 2],
+    )
+
+move_to(Vec2D(0, -30))
+
+# Convert the chosen slot to the final number shown in the center.
+if selected_slot < 8:
+    selected_slot = 8 - selected_slot
+
+write(selected_slot, font=result_style, align="center")
 ht()
