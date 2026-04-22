@@ -11,6 +11,7 @@ welcome_message = "Welcome to the Lucky Wheel game"
 start_message = "Click on the screen to begin"
 restart_message = "Click on the screen to restart"
 
+
 number_style = ("Arial", 14, "bold")
 message_style = ("Comic Sans MS", 20, "bold")
 result_style = ("Comic Sans MS", 60, "bold")
@@ -269,6 +270,8 @@ while True:
     start()
     is_clicked = False
     move_to(Vec2D(0, 240))
+    write(restart_message, font=message_style, align="center")
+    move_to(Vec2D(0, 270))
     write(restart_message, font=message_style, align="center")
     move_to(Vec2D(-30, 60))
     wait_for_click()
